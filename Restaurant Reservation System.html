@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Restaurant Reservation System</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+:root{--yellow:#E8CA3D;--orange:#C95E2F;--peach:#F9C598;--olive:#778249;--brown:#824533;--cream:#FFF8EF;--white:#FFFFFF;--gray:#F3F3F3;--text:#292522;--border:#E5DED6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--cream);color:var(--text);font:16px/1.6 "DM Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:Lora,Georgia,serif;color:var(--brown);line-height:1.2;margin:0}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1160px;margin:0 auto;padding:0 32px}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+/* header */
+header{background:var(--brown);color:var(--cream);position:sticky;top:0;z-index:5}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{font-family:Lora,serif;font-weight:700;font-size:20px;display:flex;align-items:center;gap:10px}
+.brand i{width:30px;height:30px;border-radius:50%;background:var(--yellow);display:grid;place-items:center}
+nav{display:flex;gap:6px}
+nav a{padding:8px 16px;border-radius:8px;font-weight:500;border-bottom:3px solid transparent;border-radius:8px 8px 0 0}
+nav a:hover{background:rgba(255,248,239,.12)}
+nav a.active{border-bottom-color:var(--orange);background:rgba(255,248,239,.1)}
+nav a.stafflogin{margin-left:14px;border:2px solid var(--yellow);border-radius:10px;color:var(--yellow);padding:6px 16px;font-weight:700}
+nav a.stafflogin:hover,nav a.stafflogin.active{background:var(--yellow);color:var(--brown)}
+/* buttons */
+.btn{display:inline-block;padding:13px 26px;border-radius:10px;font-weight:700;border:2px solid transparent;cursor:pointer;font:700 16px "DM Sans",sans-serif}
+.btn-p{background:var(--orange);color:#fff}.btn-p:hover{background:#b3501f}
+.btn-s{background:var(--peach);color:var(--brown)}.btn-s:hover{background:#f5b57d}
+/* hero */
+.hero{padding:72px 0 64px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center}
+.hero h1{font-size:50px;margin-bottom:18px}
+.hero p{font-size:18px;max-width:480px;margin:0 0 30px}
+.hero .actions{display:flex;gap:14px;flex-wrap:wrap}
+.hero .note{margin-top:22px;font-size:14px;color:var(--olive);font-weight:500}
+.photo{border-radius:20px;background:linear-gradient(160deg,var(--peach),#f1a977);aspect-ratio:5/4;position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(130,69,51,.18)}
+.photo svg{position:absolute;inset:0;width:100%;height:100%}
+.photo small{position:absolute;left:14px;bottom:12px;background:rgba(255,255,255,.85);padding:3px 10px;border-radius:20px;font-size:12px;color:var(--brown)}
+/* sections */
+section{padding:64px 0}
+.alt{background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:30px;gap:20px}
+.head h2{font-size:32px}.head p{margin:6px 0 0;max-width:560px}
+.link{color:var(--orange);font-weight:700}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:0 2px 10px rgba(41,37,34,.06)}
+.soft{background:var(--peach);border-color:transparent}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.ico{width:44px;height:44px;border-radius:12px;background:var(--cream);display:grid;place-items:center;margin-bottom:14px}
+.ico svg{width:24px;height:24px;stroke:var(--brown);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.card h3{font-size:20px;margin-bottom:8px}.card p{margin:0}
+/* reservation preview */
+.res{display:grid;grid-template-columns:1fr 1.1fr;gap:40px;align-items:center}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+label{font-size:14px;font-weight:700;display:block;margin-bottom:5px}
+.field{width:100%;padding:11px 13px;border:1px solid var(--border);border-radius:10px;background:var(--cream);font:16px "DM Sans",sans-serif;color:var(--text)}
+.full{grid-column:1/-1}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:#fff;font-size:14px;font-weight:500}
+.chip.on{background:var(--olive);border-color:var(--olive);color:#fff}
+/* events */
+.ev{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.ev .top{height:120px;background:var(--peach);position:relative}
+.ev .date{position:absolute;left:18px;bottom:-22px;background:var(--yellow);color:var(--text);border-radius:12px;padding:6px 14px;text-align:center;font-weight:700;line-height:1.2;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.ev .date b{display:block;font-size:22px}
+.ev .body{padding:34px 22px 22px;display:flex;flex-direction:column;gap:8px;flex:1}
+.ev h3{font-size:19px}
+.meta{font-size:14px;color:#5b524c}
+.row{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:12px}
+.badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:13px;font-weight:700}
+.b-ok{background:#e6ead3;color:#4f5a2b}.b-low{background:#fbefb5;color:#6b5a00}
+.price{font-weight:700;color:var(--brown)}
+/* ticket */
+.ticket{display:flex;background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(41,37,34,.06)}
+.ticket .main{padding:24px;flex:1}
+.ticket .stub{background:var(--brown);color:var(--cream);padding:24px;width:150px;text-align:center;border-left:2px dashed var(--peach);display:flex;flex-direction:column;justify-content:center;gap:8px}
+.qr{width:84px;height:84px;margin:0 auto;background:#fff;border-radius:8px;padding:6px}
+.ticket h3{font-size:20px;margin-bottom:10px}
+.ticket dl{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;margin:0;font-size:14px}
+.ticket dt{color:#6b625b}.ticket dd{margin:0;font-weight:700}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.list li{display:flex;gap:12px}.list svg{flex:none;width:22px;height:22px;stroke:var(--olive);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin-top:2px}
+/* steps */
+.step{text-align:left}
+.step .n{width:40px;height:40px;border-radius:50%;background:var(--yellow);font-weight:700;display:grid;place-items:center;margin-bottom:12px;color:var(--brown)}
+/* footer */
+footer{background:var(--brown);color:var(--cream);padding:48px 0 28px}
+footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
+footer h3{color:var(--yellow);font-size:16px;margin-bottom:10px}
+footer p,footer a{font-size:14px;margin:0 0 6px;display:block;opacity:.92}
+footer a:hover{text-decoration:underline}
+footer .copy{border-top:1px solid rgba(255,248,239,.25);margin-top:30px;padding-top:18px;font-size:13px;opacity:.8}
+.staff{font-size:13px}
+/* login */
+.login{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 68px)}
+.login .side{background:var(--brown);color:var(--cream);padding:72px 56px;display:flex;flex-direction:column;justify-content:center;gap:18px}
+.login .side h1{color:var(--cream);font-size:38px}
+.login .side p{margin:0;max-width:400px;opacity:.92}
+.login .side .ico{background:var(--yellow)}
+.login .side .ico svg{stroke:var(--brown)}
+.login .pane{display:grid;place-items:center;padding:48px 32px}
+.login .card{width:100%;max-width:440px;padding:34px}
+.login h2{font-size:26px;margin-bottom:6px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--gray);padding:5px;border-radius:12px;margin:20px 0}
+.seg button{border:0;border-radius:9px;padding:10px;font:700 15px "DM Sans",sans-serif;background:transparent;color:var(--text);cursor:pointer}
+.seg button.on{background:var(--brown);color:#fff}
+.fg{margin-bottom:16px}
+.pw{position:relative}.pw button{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--brown);font:700 13px "DM Sans",sans-serif;cursor:pointer;padding:6px 8px}
+.msg{display:none;border-radius:10px;padding:11px 14px;font-size:14px;margin-bottom:16px;font-weight:500}
+.msg.err{background:#fbe3da;color:#8a2f0f;border:1px solid #efb9a3}
+.msg.ok{background:#e6ead3;color:#4f5a2b;border:1px solid #c7cda3}
+.opts{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-bottom:20px}
+.opts label{display:flex;gap:8px;align-items:center;margin:0;font-weight:500}
+.hint{margin-top:18px;padding:12px 14px;border-radius:10px;background:var(--cream);border:1px solid var(--border);font-size:13px}
+@media(max-width:900px){.login{grid-template-columns:1fr}.login .side{padding:40px 28px}}
+/* sub pages */
+.page{display:none;padding:64px 0;min-height:60vh}
+.page .card{max-width:640px}
+.crumb{font-size:14px;margin-bottom:18px}.crumb a{color:var(--orange);font-weight:700}
+.empty{text-align:center;padding:40px 24px}
+@media(max-width:900px){.hero .wrap,.res,.grid2,.grid3,footer .cols{grid-template-columns:1fr}.hero h1{font-size:38px}nav a{padding:8px 10px}.brand span{display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></symbol>
+<symbol id="i-tic" viewBox="0 0 24 24"><path d="M3 9V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a3 3 0 0 0 0 6v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a3 3 0 0 0 0-6z"/><path d="M14 5v14" stroke-dasharray="2 3"/></symbol>
+<symbol id="i-tab" viewBox="0 0 24 24"><path d="M3 8h18M5 8v11M19 8v11M8 8V5h8v3"/></symbol>
+<symbol id="i-srch" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+<symbol id="i-ck" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+</defs></svg>
+
+<header><div class="wrap">
+  <a href="#home" class="brand"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#824533" stroke-width="2" stroke-linecap="round"><path d="M7 3v8a2 2 0 0 0 2 2v8M11 3v8M7 7h4M17 3c-2 2-2 6 0 8v10"/></svg></i><span>Restaurant Reservation System</span></a>
+  <nav aria-label="Main">
+    <a href="#home" data-nav="home">Home</a>
+    <a href="#reservation" data-nav="reservation">Reservation</a>
+    <a href="#events" data-nav="events">Events</a>
+    <a href="#booking" data-nav="booking">My Booking</a>
+    <a href="#login" data-nav="login" class="stafflogin">Staff Login</a>
+  </nav>
+</div></header>
+
+<main id="v-home">
+<div class="hero"><div class="wrap">
+  <div>
+    <h1>Your Next Dining Experience Starts Here</h1>
+    <p>Reserve a table, discover upcoming events, and manage your bookings in one convenient place.</p>
+    <div class="actions">
+      <a class="btn btn-p" href="#reservation">Reserve a Table</a>
+      <a class="btn btn-s" href="#events">Explore Events</a>
+    </div>
+    <div class="note">No account or sign-in needed. Book with your name and email.</div>
+  </div>
+  <div class="photo" role="img" aria-label="Placeholder for a generic restaurant dining room photo">
+    <svg viewBox="0 0 500 400" preserveAspectRatio="xMidYMid slice"><rect width="500" height="400" fill="none"/><circle cx="250" cy="215" r="120" fill="#FFF8EF"/><circle cx="250" cy="215" r="88" fill="none" stroke="#F9C598" stroke-width="6"/><circle cx="250" cy="215" r="52" fill="#E8CA3D" opacity=".85"/><path d="M95 120v100M80 120v40a15 15 0 0 0 30 0v-40M405 120c-14 20-14 60 0 80v60" stroke="#824533" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="60" cy="350" r="70" fill="#778249" opacity=".35"/><circle cx="450" cy="60" r="60" fill="#C95E2F" opacity=".25"/></svg>
+    <small>Sample image placeholder</small>
+  </div>
+</div></div>
+
+<section class="alt" id="reservation-info"><div class="wrap">
+  <div class="res">
+    <div>
+      <h2>Restaurant Reservation</h2>
+      <p>Pick a date, time, and party size. You get a booking code right away, and you can use it to check status or cancel before the cutoff.</p>
+      <ul class="list" style="margin:20px 0 26px">
+        <li><svg><use href="#i-ck"/></svg>Instant confirmation with a booking code</li>
+        <li><svg><use href="#i-ck"/></svg>Free cancellation up to 2 hours before your time</li>
+        <li><svg><use href="#i-ck"/></svg>Seating for 1 to 12 guests</li>
+      </ul>
+      <a class="btn btn-p" href="#reservation">Reserve a Table</a>
+    </div>
+    <div class="card">
+      <h3>Quick availability check</h3>
+      <div class="form">
+        <div><label for="d">Date</label><input id="d" class="field" value="Sat, Nov 7, 2026" readonly></div>
+        <div><label for="g">Guests</label><input id="g" class="field" value="4 guests" readonly></div>
+        <div class="full"><label>Available times</label>
+          <div class="chips"><span class="chip">5:30 PM</span><span class="chip on">6:00 PM</span><span class="chip">6:30 PM</span><span class="chip">7:30 PM</span><span class="chip">8:00 PM</span></div></div>
+        <div class="full"><a class="btn btn-p" href="#reservation" style="width:100%;text-align:center">Continue to Reservation</a></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section id="events-info"><div class="wrap">
+  <div class="head"><div><h2>Upcoming Events</h2><p>Special dinners, tastings, and workshops. Register online and receive your ticket by email.</p></div><a class="link" href="#events">View all events</a></div>
+  <div class="grid3">
+    <article class="card ev"><div class="top"><div class="date"><b>14</b>Nov</div></div><div class="body"><h3>Harvest Tasting Dinner</h3><div class="meta">Sat, 6:30 PM · Main Dining Hall</div><span class="badge b-ok" style="align-self:flex-start">42 seats left</span><div class="row"><span class="price">₱1,500 / person</span><a class="btn btn-p" href="#events" style="padding:9px 18px">Register</a></div></div></article>
+    <article class="card ev"><div class="top" style="background:#e9d98a"><div class="date" style="background:var(--olive);color:#fff"><b>21</b>Nov</div></div><div class="body"><h3>Live Acoustic Night</h3><div class="meta">Sat, 7:30 PM · Garden Terrace</div><span class="badge b-low" style="align-self:flex-start">Only 8 seats left</span><div class="row"><span class="price">₱800 / person</span><a class="btn btn-p" href="#events" style="padding:9px 18px">Register</a></div></div></article>
+    <article class="card ev"><div class="top" style="background:#c7cda3"><div class="date"><b>05</b>Dec</div></div><div class="body"><h3>Holiday Cooking Workshop</h3><div class="meta">Sat, 2:00 PM · Open Kitchen</div><span class="badge b-ok" style="align-self:flex-start">18 seats left</span><div class="row"><span class="price">₱1,200 / person</span><a class="btn btn-p" href="#events" style="padding:9px 18px">Register</a></div></div></article>
+  </div>
+</div></section>
+
+<section class="alt" id="ticketing"><div class="wrap">
+  <div class="res">
+    <div class="ticket">
+      <div class="main"><h3>Harvest Tasting Dinner</h3>
+        <dl><dt>Ticket code</dt><dd>EVT-20481</dd><dt>Guest</dt><dd>Maria Santos</dd><dt>Date</dt><dd>Sat, Nov 14 · 6:30 PM</dd><dt>Admits</dt><dd>2 guests</dd><dt>Status</dt><dd><span class="badge b-ok">Confirmed</span></dd></dl></div>
+      <div class="stub"><svg class="qr" viewBox="0 0 10 10" shape-rendering="crispEdges"><path fill="#292522" d="M0 0h3v3H0zM7 0h3v3H7zM0 7h3v3H0zM4 1h1v2H4zM4 4h2v1H4zM1 4h2v1H1zM6 5h1v2H6zM8 4h2v2H8zM4 6h1v3H4zM6 8h2v1H6zM9 7h1v3H9z"/><path fill="#fff" d="M1 1h1v1H1zM8 1h1v1H8zM1 8h1v1H1z"/></svg><small style="font-size:12px">Show at entrance</small></div>
+    </div>
+    <div>
+      <h2>Event Ticketing</h2>
+      <p>After you register, a digital ticket with a QR code is shown on screen and sent to your email. Staff scan it at the door, so no printing or account is required.</p>
+      <ul class="list" style="margin:20px 0 26px">
+        <li><svg><use href="#i-ck"/></svg>Ticket delivered instantly after registration</li>
+        <li><svg><use href="#i-ck"/></svg>Look up or re-download it anytime in My Booking</li>
+        <li><svg><use href="#i-ck"/></svg>Cancel eligible tickets with your ticket code</li>
+      </ul>
+      <a class="btn btn-s" href="#booking">Find My Booking</a>
+    </div>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <div class="head"><div><h2>How It Works</h2><p>Four steps, no sign-in.</p></div></div>
+  <div class="grid3" style="grid-template-columns:repeat(4,1fr)">
+    <div class="card step"><div class="n">1</div><h3>Choose</h3><p>Pick a table time or an event.</p></div>
+    <div class="card step"><div class="n">2</div><h3>Enter details</h3><p>Add your name, email, and phone.</p></div>
+    <div class="card step"><div class="n">3</div><h3>Get confirmed</h3><p>Receive a booking code or ticket.</p></div>
+    <div class="card step"><div class="n">4</div><h3>Manage</h3><p>Check status or cancel in My Booking.</p></div>
+  </div>
+</div></section>
+</main>
+
+<main class="page" id="v-reservation"><div class="wrap"><div class="crumb"><a href="#home">Home</a> / Reservation</div><h1 style="margin-bottom:20px">Reserve a Table</h1><div class="card empty"><div class="ico" style="margin:0 auto 14px"><svg><use href="#i-tab"/></svg></div><h3>Reservation form coming next</h3><p>This page is the next screen in the design.</p><p style="margin-top:18px"><a class="btn btn-s" href="#home">Back to Home</a></p></div></div></main>
+<main class="page" id="v-events"><div class="wrap"><div class="crumb"><a href="#home">Home</a> / Events</div><h1 style="margin-bottom:20px">Events</h1><div class="card empty"><div class="ico" style="margin:0 auto 14px"><svg><use href="#i-cal"/></svg></div><h3>Events listing coming next</h3><p>This page is the next screen in the design.</p><p style="margin-top:18px"><a class="btn btn-s" href="#home">Back to Home</a></p></div></div></main>
+<main class="page" id="v-booking"><div class="wrap"><div class="crumb"><a href="#home">Home</a> / My Booking</div><h1 style="margin-bottom:20px">My Booking</h1><div class="card empty"><div class="ico" style="margin:0 auto 14px"><svg><use href="#i-srch"/></svg></div><h3>Booking lookup coming next</h3><p>This page is the next screen in the design.</p><p style="margin-top:18px"><a class="btn btn-s" href="#home">Back to Home</a></p></div></div></main>
+
+<main class="page" id="v-login" style="padding:0"><div class="login">
+  <div class="side">
+    <div class="ico"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+    <h1>Staff and Admin Sign In</h1>
+    <p>This area is for restaurant staff and administrators. Customers can reserve, register for events, and manage bookings without signing in.</p>
+    <p><a href="#home" style="color:var(--yellow);font-weight:700">Back to the customer website</a></p>
+  </div>
+  <div class="pane"><div class="card">
+    <h2>Welcome back</h2>
+    <p style="margin:0;color:#5b524c">Choose your role and sign in to continue.</p>
+    <div class="seg" role="group" aria-label="Role"><button type="button" class="on" data-role="Admin">Admin</button><button type="button" data-role="Staff">Staff</button></div>
+    <div class="msg err" id="lg-err" role="alert"></div>
+    <div class="msg ok" id="lg-ok" role="status"></div>
+    <div class="fg"><label for="lg-email">Email address</label><input id="lg-email" class="field" type="email" placeholder="name@restaurant.com" autocomplete="username"></div>
+    <div class="fg"><label for="lg-pw">Password</label><div class="pw"><input id="lg-pw" class="field" type="password" placeholder="Enter your password" autocomplete="current-password"><button type="button" id="lg-show">Show</button></div></div>
+    <div class="opts"><label><input type="checkbox"> Keep me signed in</label><a class="link" href="#login" id="lg-forgot">Forgot password?</a></div>
+    <button type="button" class="btn btn-p" id="lg-go" style="width:100%">Sign In as Admin</button>
+    <div class="hint"><b>Demo only:</b> enter any email and password to preview. Admin goes to the Admin Dashboard and Staff goes to the Staff Dashboard.</div>
+  </div></div>
+</div></main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><h3>Restaurant Reservation System</h3><p>Reservations, events, and tickets for one restaurant. A sample academic project.</p></div>
+    <div><h3>Contact</h3><p>123 Sample Street, City</p><p>(000) 123-4567</p><p>hello@example.com</p></div>
+    <div><h3>Hours</h3><p>Mon to Fri: 11 AM to 10 PM</p><p>Sat to Sun: 10 AM to 11 PM</p></div>
+    <div><h3>Policies</h3><a href="#home">Cancellation policy</a><a href="#home">Privacy policy</a><a href="#home">Terms of use</a></div>
+  </div>
+  <div class="copy">© 2026 Restaurant Reservation System. For demonstration only. <span class="staff">· <a href="#login" style="display:inline">Staff and admin sign in</a></span></div>
+</div></footer>
+
+<script>
+(function(){
+  var views=['home','reservation','events','booking','login'];
+  function show(){
+    var h=(location.hash||'#home').slice(1);
+    if(views.indexOf(h)<0){h='home'}
+    views.forEach(function(v){
+      var el=document.getElementById('v-'+v);
+      el.style.display=(v===h)?'block':'none';
+    });
+    document.querySelectorAll('nav a').forEach(function(a){
+      a.classList.toggle('active',a.dataset.nav===h);
+      if(a.dataset.nav===h){a.setAttribute('aria-current','page')}else{a.removeAttribute('aria-current')}
+    });
+    window.scrollTo(0,0);
+  }
+  var role='Admin',$=function(i){return document.getElementById(i)};
+  document.querySelectorAll('.seg button').forEach(function(b){b.addEventListener('click',function(){
+    role=b.dataset.role;
+    document.querySelectorAll('.seg button').forEach(function(x){x.classList.toggle('on',x===b)});
+    $('lg-go').textContent='Sign In as '+role;$('lg-err').style.display='none';$('lg-ok').style.display='none';
+  })});
+  $('lg-show').addEventListener('click',function(){var p=$('lg-pw'),s=p.type==='password';p.type=s?'text':'password';this.textContent=s?'Hide':'Show'});
+  $('lg-forgot').addEventListener('click',function(e){e.preventDefault();$('lg-ok').style.display='none';var m=$('lg-err');m.textContent='Password reset is handled by your administrator. Contact them to reset your password.';m.style.display='block'});
+  $('lg-go').addEventListener('click',function(){
+    var e=$('lg-email').value.trim(),p=$('lg-pw').value,er=$('lg-err'),ok=$('lg-ok');
+    er.style.display='none';ok.style.display='none';
+    if(!e||!p){er.textContent='Enter your email address and password.';er.style.display='block';return}
+    if(e.indexOf('@')<1){er.textContent='Enter a valid email address, such as name@restaurant.com.';er.style.display='block';return}
+    ok.textContent='Signed in as '+role+'. Opening the '+role+' Dashboard (next screen in the design).';ok.style.display='block';
+  });
+  window.addEventListener('hashchange',show);
+  show();
+})();
+</script>
+</body>
+</html>
